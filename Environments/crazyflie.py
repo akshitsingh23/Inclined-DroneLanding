@@ -1,6 +1,4 @@
-
 # Custom gym-like Environment classes for the Crazyflie quadrotor
-
 from EOM.eom import pwm_to_force, force_to_pwm, eom2d_crazyflie_closedloop, eom3d_crazyflie_closedloop
 from EOM.rk4 import runge_kutta4
 import random as r
@@ -20,7 +18,7 @@ class Crazyflie_2d_inclined(gym.Env):
 
     # state = [x, z, xdot, zdot, theta], action = [Thrust, Theta_commanded], param = [mass, gain_const, time_const]
 
-    def __init__(self, t_s, goal_state=np.array([0, 1.25, 0, 0, 0], dtype=float),
+    def __init__(self,landing_angle, t_s, goal_state=np.array([0, 1.25, 0, 0, 0], dtype=float),
                  episode_steps=300, rewardfunc=sparse_reward2d, eom=eom2d_crazyflie_closedloop,
                  max_pwm_from_hover=15000, param=np.array([0.03303, 1.1094, 0.183806]), rk4=runge_kutta4):
         super(Crazyflie_2d_inclined, self).__init__()

@@ -1,6 +1,4 @@
-
 # Custom gym-like Environment classes for the Crazyflie quadrotor
-
 from EOM.eom import pwm_to_force, force_to_pwm, eom2d_crazyflie_closedloop, eom3d_crazyflie_closedloop
 from EOM.rk4 import runge_kutta4
 import random as r
@@ -50,20 +48,27 @@ class Crazyflie_2d_inclined_eval(gym.Env):
         self.T_s = t_s
         self.Timesteps = 0
         self.goal_state = goal_state
-
+        g = 9.81
         # Used for simulations
         self.thrust_state = np.array([0])
         self.real_action = np.array([0, 0])
-        self.hover_pwm = force_to_pwm(self.param[0]*9.81)   # Calculate the theoretical hover thrust
+        self.hover_pwm = force_to_pwm(self.param[0]*g)   # Calculate the theoretical hover thrust
         self.max_pwm_from_hover = max_pwm_from_hover
 
         self.episode_counter = 0
         self.goal_range = 0.10
-        self.action_space = spaces.Box(low=np.array([-1, -1]),
-                                       high=np.array([1, 1]), dtype=np.float)
-        # States are: [x, z, x_dot. z_dot, Theta, Theta_dot]
-        self.observation_space = spaces.Box(low=np.array([-3.4, 0,  -10, -10, -pi/3]),
-                                            high=np.array([3.4, 2.4, 10, 10, pi/3]), dtype=np.float)
+        self.action_space = spaces.Box(
+            low=np.array([-1, -1], dtype=np.float32),  # Specify dtype here in the array function
+            high=np.array([1, 1], dtype=np.float32),  # Same dtype specification
+            dtype=np.float32  # Explicitly define dtype for the Box space itself
+        )
+
+    # States are defined as [x, z, x_dot, z_dot, Theta, Theta_dot]
+        self.observation_space = spaces.Box(
+            low=np.array([-3.4, 0, -10, -10, -pi/3], dtype=np.float32),  # Define dtype in np.array
+            high=np.array([3.4, 2.4, 10, 10, pi/3], dtype=np.float32),  # Maintain consistent dtype
+            dtype=np.float32  # Explicit dtype for the Box space
+        )
         self.reward_range = (-float("inf"), float("inf"))
         self.agent_pos = []
         self.reset()
@@ -320,7 +325,7 @@ class Crazyflie_3d_setpoint_eval(gym.Env):
         self.spawn_increment = 1/6000
 
         self.thrust_state = np.array([0])
-        self.hover_pwm = force_to_pwm(self.param[0]*9.81)
+        self.hover_pwm = force_to_pwm(self.param[0]*g)
         self.max_pwm_from_hover = max_pwm_from_hover
 
         self.action_space = spaces.Box(low=np.array([-1, -1, -1]),
