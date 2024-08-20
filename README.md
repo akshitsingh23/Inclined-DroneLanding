@@ -39,7 +39,7 @@ PPO Sparse Inclined Landing (3000000 timesteps)           |  PPO Euclidean Setpo
 
 ## Questions
 
-For any questions, errors or suggestions contact me at mailto:akshitsingh2352003@gmail.com.
+For any questions, errors or suggestions contact me at akshitsingh2352003@gmail.com.
 
 ## Citing
 
